@@ -1,23 +1,23 @@
 ﻿namespace Inventory.API.Dtos
 {
-    public abstract class Response<T>
+    public abstract class ResponseDto<T>
     {
         public T Data { get; set; }
         public string Message { get; set; }
         public bool Status { get; set; }
     }
 
-    public class SuccessResponse<T> : Response<T>
+    public class SuccessResponseDto<T> : ResponseDto<T>
     {
-        public SuccessResponse()
+        public SuccessResponseDto()
         {
             Status = true;
         }
     }
 
-    public class FailureResponse<T> : Response<T>
+    public class FailureResponseDto<T> : ResponseDto<T>
     {
-        public FailureResponse()
+        public FailureResponseDto()
         {
             Status = false;
         }

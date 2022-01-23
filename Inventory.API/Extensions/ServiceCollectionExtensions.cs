@@ -1,5 +1,7 @@
-﻿using Inventory.API.Services;
+﻿using Inventory.API.Mediator;
+using Inventory.API.Services;
 using Inventory.Domain;
+using Inventory.Domain.Dispatcher;
 using Inventory.Domain.Interfaces;
 using Inventory.Infrastructure;
 using Inventory.Infrastructure.Repositories;
@@ -36,6 +38,12 @@ namespace Inventory.API.Extensions
         {
             return services
                 .AddScoped<ProductService>();
+        }
+
+        public static IServiceCollection AddDispatcherServices(this IServiceCollection services
+           )
+        {
+            return services.AddScoped<IDomainEventDispatcher, MediatrDomainEventDispatcher>();
         }
     }
 }

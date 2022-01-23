@@ -9,18 +9,20 @@ namespace Inventory.Domain.Base
 {
     public class BaseEntity
     {
+        [NotMapped]
         private List<BaseDomainEvent> _events;
         [NotMapped]
         public IReadOnlyList<BaseDomainEvent> Events => _events.AsReadOnly();
 
         protected void AddEvent(BaseDomainEvent @event)
         {
+            _events = _events ?? new List<BaseDomainEvent>();
             _events.Add(@event);
         }
 
         protected void RemoveEvent(BaseDomainEvent @event)
         {
-            _events.Remove(@event);
+            _events?.Remove(@event);
         }
     }
 }

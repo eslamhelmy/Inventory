@@ -20,11 +20,24 @@ namespace Inventory.API.Controllers
             _service = service;
             _logger = logger;
         }
+        [HttpGet("Inventory")]
+        public async Task<IActionResult> GetInventory()
+        {
+            var result = await _service.GetInventory();
+            return Ok(result);
+        }
 
         [HttpPut("sell")]
         public async Task<IActionResult> SellProduct([FromBody] SellProductDto sellProductDto)
         {
             var result = await _service.SellProduct(sellProductDto);
+            return Ok(result);
+        }
+
+        [HttpPut("ChangeStatus")]
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeProductStatusDto changeProductStatusDto)
+        {
+            var result = await _service.ChangeStatus(changeProductStatusDto);
             return Ok(result);
         }
 

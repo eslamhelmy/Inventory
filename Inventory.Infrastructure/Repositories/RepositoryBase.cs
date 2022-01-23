@@ -41,7 +41,7 @@ namespace Inventory.Infrastructure.Repositories
             return _dbSet.Where(expression).ToListAsync();
         }
 
-        public IQueryable<T> QuerableAsync()
+        public IQueryable<T> Querable()
         {
             return _dbSet.AsQueryable();
         }

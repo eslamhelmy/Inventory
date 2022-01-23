@@ -1,6 +1,7 @@
 ﻿using Inventory.API.Dtos;
 using Inventory.Domain;
 using Inventory.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,51 +17,56 @@ namespace Inventory.API.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Response<bool>> SellProduct(SellProductDto productDto)
+        public async Task<ResponseDto<bool>> SellProduct(SellProductDto productDto)
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
             var product = await repository.GetAsync(x => x.Id == productDto.ProductId);
             var isSold = product.Sell();
             if (!isSold)
             {
-                return new FailureResponse<bool>
+                return new FailureResponseDto<bool>
                 {
                     Message = "the product is not in stock",
                     Data = false
                 };
             }
             await _unitOfWork.SaveChangesAsync();
-            return new SuccessResponse<bool>
+            return new SuccessResponseDto<bool>
             {
                 Data = true
             };
         }
 
-        public async Task<Response<bool>> ChangeStatus(ChangeProductStatusDto changeStatusDto)
+        public async Task<ResponseDto<bool>> ChangeStatus(ChangeProductStatusDto changeStatusDto)
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
             var product = await repository.GetAsync(x => x.Id == changeStatusDto.ProductId);
             product.ChangeStatus(changeStatusDto.Status);
             await _unitOfWork.SaveChangesAsync();
 
-            return new SuccessResponse<bool>
+            return new SuccessResponseDto<bool>
             {
                 Data = true
             };
         }
 
-        public ICollection<StockInfoDto> GetSalesInfo()
+        public async Task<ResponseDto<ICollection<InventoryDto>>> GetInventory()
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
+            
             // I used querable to not load all products into memory
-            var stockdto = repository.QuerableAsync().GroupBy(x => x.Status)
-                .Select(x => new StockInfoDto
+            var inventoryDto =await repository.Querable().GroupBy(x => x.Status)
+                .Select(x => new InventoryDto
                 {
                     Status = x.Key,
+                    StatusName = x.Key == ProductStatus.Sold? "Sold": x.Key == ProductStatus.InStock? "In Stock": "Damaged",
                     Count = x.Count()
-                }).ToList();
+                }).ToListAsync();
 
-            return stockdto;
+            return new SuccessResponseDto<ICollection<InventoryDto>>
+            {
+                Data = inventoryDto
+            };
         }
 
 

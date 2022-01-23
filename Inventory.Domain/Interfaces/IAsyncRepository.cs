@@ -19,7 +19,7 @@ namespace Inventory.Domain.Interfaces
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
 
         Task<List<T>> ListAsync(Expression<Func<T, bool>> expression);
-        IQueryable<T> QuerableAsync();
+        IQueryable<T> Querable();
 
     }
 }

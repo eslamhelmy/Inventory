@@ -1,6 +1,8 @@
 ﻿using Inventory.Domain.Base;
 using Inventory.Domain.Interfaces;
 using Inventory.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace Inventory.Infrastructure
 
         public Task<int> SaveChangesAsync()
         {
+            
             return _dbContext.SaveChangesAsync();
         }
     }
