@@ -20,7 +20,6 @@ namespace Inventory.API.Mediator
 
         public async Task Dispatch(BaseDomainEvent @event)
         {
-
             var domainEventNotification = _createDomainEventNotification(@event);
             _log.LogDebug("Dispatching Domain Event as MediatR notification.  EventType: {eventType}", @event.GetType());
             await _mediator.Publish(domainEventNotification);

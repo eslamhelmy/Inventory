@@ -28,7 +28,6 @@ namespace Inventory.Infrastructure
                var events = domainEntity.Entity.Events;
                 foreach (var item in events)
                 {
-                    //publish events
                    await _dispatcher.Dispatch(item);
                 }
             }

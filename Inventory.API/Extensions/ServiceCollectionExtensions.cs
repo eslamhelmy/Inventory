@@ -5,9 +5,11 @@ using Inventory.Domain.Dispatcher;
 using Inventory.Domain.Interfaces;
 using Inventory.Infrastructure;
 using Inventory.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Inventory.API.Extensions
 {
@@ -39,7 +41,11 @@ namespace Inventory.API.Extensions
             return services
                 .AddScoped<ProductService>();
         }
-
+        public static IServiceCollection AddMediatrServices(this IServiceCollection services
+          )
+        {
+           return services.AddMediatR(typeof(MediatrDomainEventDispatcher).GetTypeInfo().Assembly);
+        }
         public static IServiceCollection AddDispatcherServices(this IServiceCollection services
            )
         {

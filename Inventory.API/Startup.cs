@@ -1,20 +1,11 @@
 using Inventory.API.Extensions;
-using Inventory.API.Mediator;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+
 
 namespace Inventory.API
 {
@@ -30,12 +21,12 @@ namespace Inventory.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(MediatrDomainEventDispatcher).GetTypeInfo().Assembly);
             services
              .AddDatabase(Configuration)
              .AddUnitOfWork()
              .AddRepositories()
              .AddBusinessServices()
+             .AddMediatrServices()
              .AddDispatcherServices();
 
             services.AddControllers();

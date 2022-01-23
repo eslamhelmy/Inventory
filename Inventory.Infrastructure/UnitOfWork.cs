@@ -26,8 +26,7 @@ namespace Inventory.Infrastructure
         }
 
         public Task<int> SaveChangesAsync()
-        {
-            
+        {   
             return _dbContext.SaveChangesAsync();
         }
     }
