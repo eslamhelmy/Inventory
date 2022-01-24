@@ -20,9 +20,9 @@ namespace Inventory.API.Services
         public async Task<ResponseDto<bool>> SellProduct(SellProductDto productDto)
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
-            var product = await repository.GetAsync(x => x.Id == productDto.ProductId);
-            var isSold = product.Sell();
-            if (!isSold)
+            var product = await repository.GetAsync(x => x.Id == productDto.ProductId.Value);
+            var isSold = product?.Sell();
+            if (!isSold.HasValue)
             {
                 return new FailureResponseDto<bool>
                 {
@@ -40,8 +40,8 @@ namespace Inventory.API.Services
         public async Task<ResponseDto<bool>> ChangeStatus(ChangeProductStatusDto changeStatusDto)
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
-            var product = await repository.GetAsync(x => x.Id == changeStatusDto.ProductId);
-            product.ChangeStatus(changeStatusDto.Status);
+            var product = await repository.GetAsync(x => x.Id == changeStatusDto.ProductId.Value);
+            product.ChangeStatus(changeStatusDto.Status.Value);
             await _unitOfWork.SaveChangesAsync();
 
             return new SuccessResponseDto<bool>
