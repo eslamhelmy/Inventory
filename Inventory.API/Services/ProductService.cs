@@ -22,7 +22,7 @@ namespace Inventory.API.Services
             var repository = _unitOfWork.AsyncRepository<Product>();
             var product = await repository.GetAsync(x => x.Id == productDto.ProductId.Value);
             var isSold = product?.Sell();
-            if (!isSold.HasValue)
+            if (!isSold.HasValue || isSold.Value == false)
             {
                 return new FailureResponseDto<bool>
                 {
