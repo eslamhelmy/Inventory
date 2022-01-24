@@ -41,6 +41,14 @@ namespace Inventory.API.Services
         {
             var repository = _unitOfWork.AsyncRepository<Product>();
             var product = await repository.GetAsync(x => x.Id == changeStatusDto.ProductId.Value);
+            if(product == null)
+            {
+                return new FailureResponseDto<bool>
+                {
+                    Data = false,
+                    Message = "this product doesn't exist"
+                };
+            }
             product.ChangeStatus(changeStatusDto.Status.Value);
             await _unitOfWork.SaveChangesAsync();
 
